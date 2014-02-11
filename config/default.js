@@ -1,6 +1,6 @@
 module.exports = {
   port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000,
   ip: process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
-  pg_config: process.env.OPENSHIFT_POSTGRESQL_DB_URL || 'postgresql://127.0.0.1:5432',
-  table_name: process.env.OPENSHIFT_APP_NAME || process.env.PG_MAP_TABLE_NAME || 'parks'
+  db_config: process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://127.0.0.1:27017/',
+  table_name: process.env.DB_MAP_TABLE_NAME || process.env.OPENSHIFT_APP_NAME || 'parks'
 }

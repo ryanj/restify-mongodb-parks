@@ -55,7 +55,9 @@
       var markerArray = new Array(data.length)
       for (var i = 0; i < data.length; i++){
         park = data[i];
-        markerArray[i] = L.marker([park.lat, park.lon]).bindPopup(park.name);
+        long = park.pos[0];
+        lat  = park.pos[1];
+        markerArray[i] = L.marker([lat, long]).bindPopup(park.Name);
       }
  
       markerLayerGroup = L.layerGroup(markerArray).addTo(map);
@@ -66,6 +68,6 @@
     map.whenReady(getPins)
 
   </script>
-  <span id="fossribbon"><a href="https://openshift.redhat.com/app/console/application_types/custom?name=parks&initial_git_url=https%3A%2F%2Fgithub.com/ryanj/restify-postGIS.git&cartridges[]=nodejs-0.10&cartridges[]=postgresql-9.2">Run me on OpenShift</a></span>
+  <span id="fossribbon"><a href="https://openshift.redhat.com/app/console/application_types/custom?name=parks&initial_git_url=https%3A%2F%2Fgithub.com/ryanj/restify-mongodb-parks.git&cartridges[]=nodejs-0.10&cartridges[]=mongodb-2.2">Run me on OpenShift</a></span>
 </body>
 </html>

@@ -1,70 +1,48 @@
 var config      = require('config'),
-    pg          = require('pg-query')
+    mongojs     = require('mongojs');
 
-var pg_config   = config.pg_config,
+var db_config   = config.db_config,
     table_name  = config.table_name;
-pg.connectionParameters = pg_config + '/' +table_name;
-
-var points = require('../parkcoord.json');
-var error_response = "data already exists - bypassing db initialization step\n";
-
-function createDBSchema(err, rows, result) {
-  if(err && err.code == "ECONNREFUSED"){
-    return console.error("DB connection unavailable, see README notes for setup assistance\n", err);
-  }
-  var query = "CREATE TABLE "+table_name+" ( gid serial NOT NULL, name character varying(240), the_geom geometry, CONSTRAINT "+table_name+ "_pkey PRIMARY KEY (gid), CONSTRAINT enforce_dims_geom CHECK (st_ndims(the_geom) = 2), CONSTRAINT enforce_geotype_geom CHECK (geometrytype(the_geom) = 'POINT'::text OR the_geom IS NULL),CONSTRAINT enforce_srid_geom CHECK (st_srid(the_geom) = 4326) ) WITH ( OIDS=FALSE );";
-  pg(query, addSpatialIndex);
-};
-
-function addSpatialIndex(err, rows, result) {
-  if(err) {
-    return console.error(error_response, err);
-  }
-  pg("CREATE INDEX "+table_name+"_geom_gist ON "+table_name+" USING gist (the_geom);", importMapPoints);
-}
-
-function importMapPoints(err, rows, result) {
-  if(err) {
-    return console.error(error_response, err);
-  }
-  var insert = "Insert into "+table_name+" (name, the_geom) VALUES ";
-  var qpoints = points.map(insertMapPinSQL).join(",");
-  var query = insert + qpoints + ';';
-  console.log(query);
-  pg(query, function(err, rows, result) {
-    if(err) {
-      return console.error(error_response, err);
-    }
-    var response = 'Data import completed!';
-    return response;
-  });
-};
-
-function insertMapPinSQL(pin) {
-  var query = '';
-  var escape = /'/g
-  
-  if(typeof(pin) == 'object'){
-    query = "('" + pin.Name.replace(/'/g,"''") + "', ST_GeomFromText('POINT(" + pin.pos[0] +" "+ pin.pos[1] + " )', 4326))";  
-  }
-  return query;
-};
+var db = mongojs(db_config + table_name, [table_name] );
 
 function init_db(){
-  pg('CREATE EXTENSION postgis;', createDBSchema);
+  var points = require('../parkcoord.json');
+  var error_response = "data already exists - bypassing db initialization step\n";
+  db[table_name].ensureIndex({'pos':"2d"}, function(err, doc){
+    if(err){
+      console.log(err);
+      console.log(error_response);
+    }else{
+      console.log("index added on 'pos'");
+    }
+    db[table_name].insert(points, function(errr, docs){
+      if(errr){
+        console.log(errr);
+      }else{
+        console.log("map points added");
+      }
+      return;
+    });
+  });
 } 
 
 function flush_db(){
-  pg('DROP TABLE '+ table_name+';', function(err, rows, result){
-    var response = 'Database dropped!';
-    console.log(response);
-    return response;
+  console.log("Dropping the DB...");
+  db[table_name].drop(function(err){
+    if(err){
+      console.log(err);
+    }
+    return;
   });
 } 
 
 function select_box(req, res, next){
   //clean these variables:
   var query = req.query;
+  var lat1 = Number(query.lat1),
+      lon1 = Number(query.lon1),
+      lat2 = Number(query.lat2),
+      lon2 = Number(query.lon2);
   var limit = (typeof(query.limit) !== "undefined") ? query.limit : 40;
   if(!(Number(query.lat1) 
     && Number(query.lon1) 
@@ -73,26 +51,26 @@ function select_box(req, res, next){
     && Number(limit)))
   {
     res.send(500, {http_status:400,error_msg: "this endpoint requires two pair of lat, long coordinates: lat1 lon1 lat2 lon2\na query 'limit' parameter can be optionally specified as well."});
-    return console.error('could not connect to postgres', err);
+    return console.error('could not connect to the database', err);
   }
-  pg('SELECT gid,name,ST_X(the_geom) as lon,ST_Y(the_geom) as lat FROM ' + table_name+ ' t WHERE ST_Intersects( ST_MakeEnvelope('+query.lon1+", "+query.lat1+", "+query.lon2+", "+query.lat2+", 4326), t.the_geom) LIMIT "+limit+';', function(err, rows, result){
+  db[table_name].find( {"pos" : {'$within': { '$box': [[lon1,lat1],[lon2,lat2]]}}}).limit(limit).toArray(function(err,rows){
+    if(err) {
+      res.send(500, {http_status:500,error_msg: err})
+      return console.error('error running query', err);
+    }
+    //res.header("Content-Type:","application/json");
+    res.send(rows);
+    return rows;
+  });
+};
+function select_all(req, res, next){
+  console.log(db);
+  db[table_name].find(function(err, rows){
     if(err) {
       res.send(500, {http_status:500,error_msg: err})
       return console.error('error running query', err);
     }
     res.send(rows);
-    return rows;
-  })
-};
-function select_all(req, res, next){
-  console.log(pg);
-  pg('SELECT gid,name,ST_X(the_geom) as lon,ST_Y(the_geom) as lat FROM ' + table_name +';', function(err, rows, result) {
-    console.log(config);
-    if(err) {
-      res.send(500, {http_status:500,error_msg: err})
-      return console.error('error running query', err);
-    }
-    res.send(result);
     return rows;
   });
 };
