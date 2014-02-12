@@ -1,6 +1,6 @@
 {
-  "name": "PostGIS-Parks",
-  "description": "A simple mapping application for finding National Parks and Historic Sites, powered by postGIS and Leaflet maps",
+  "name": "MongoDB-USParks",
+  "description": "A simple mapping application for finding US National Parks and Historic Sites, powered by MongoDB and Leaflet maps",
   "version": "0.0.1",
   "private": true,
   "engines": {
