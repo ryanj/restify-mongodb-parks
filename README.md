@@ -3,7 +3,7 @@
 
 A basic instant mapping demo using MongoDB, node-restify, LeafLet Maps and map tiles from Stamen, to visualize the locations of major National Parks and Historic Sites.
 
-<a href='http://parks-shifter.rhcloud.com/'><img src='https://www.openshift.com/sites/default/files/Parks_preview.png'/></a>
+<a href='http://mongoparks-shifter.rhcloud.com/'><img src='https://www.openshift.com/sites/default/files/Parks_preview.png'/></a>
 
 Related post on OpenShift.com: [https://www.openshift.com/blogs/instant-mapping-applications-with-postgis-and-nodejs](https://www.openshift.com/blogs/instant-mapping-applications-with-postgis-and-nodejs)
 
@@ -16,7 +16,7 @@ Or, [link to a web-based **clone+deploy**](https://openshift.redhat.com/app/cons
 
     https://openshift.redhat.com/app/console/application_type/custom?name=parks&cartridges%5B%5D=nodejs-0.10&cartridges%5B%5D=mongodb-2.2&initial_git_url=https%3A%2F%2Fgithub.com%2Fryanj%2Frestify-mongodb-parks.git
 
-A live demo is available at: [http://parks-shifter.rhcloud.com/](http://parks-shifter.rhcloud.com/)
+A live demo is available at: [http://mongoparks-shifter.rhcloud.com/](http://mongoparks-shifter.rhcloud.com/)
 
 ## Local Development
 Before you spin up a local server, you'll need a copy of the source code, and an installation of [nodejs](http://nodejs.org/).
@@ -70,7 +70,7 @@ Now, set your `OPENSHIFT_POSTGRESQL_DB_URL` environment variable, substituting y
 
 My application's command ended up looking like this:
 
-    export OPENSHIFT_MONGODB_DB_URL="mongodb://admin32jk510:X_kgB-3LfUd3@127.0.0.1:5433"
+    export OPENSHIFT_MONGODB_DB_URL="mongodb://admin:X_kgB-3LfUd3@127.0.0.1:27017"
 
 This app also expects to use a MongoDB collection name (`table_name`) that matches your application's name (as defined within OpenShift).  When running this application on OpenShift, the `OPENSHIFT_APP_NAME` environment variable will be automatically populated.  If you didn't name your application "parks" (the default value for this option), then you will likely need to set an extra environment variable containing your table name in your local dev environment:
 
