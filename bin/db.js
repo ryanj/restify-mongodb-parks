@@ -1,12 +1,13 @@
 var config      = require('config'),
-    mongojs     = require('mongojs');
+    mongojs     = require('mongojs'),
+    split       = require('split'),
+    fs          = require('fs');
 
 var db_config   = config.db_config,
     collection_name = config.collection_name;
 var db = mongojs(db_config + collection_name, [collection_name] );
 
 function init_db(){
-  var points = require(__dirname + '/../parkcoord.json');
   db[collection_name].ensureIndex({'pos':"2d"}, function(err, doc){
     if(err){
       console.log(err);
@@ -16,13 +17,26 @@ function init_db(){
       db[collection_name].count(function(errr, count){
         if(errr){
           console.log(errr);
+          return db.close();
         }else if(count > 0){
           console.log("data already exists - bypassing db initialization work...");
+          return db.close();
         }else{
           console.log("Importing map points...");
-          db[collection_name].insert(points);
+          fs.createReadStream(__dirname + '/../target_stores.csv')
+            .pipe(split())
+            .on('data', function (line) {
+              store = line.split(',');
+              if( !isNaN(store[2]) && !isNaN(store[1])){
+                db[collection_name].insert({
+                  Name: store[0], 
+                  pos: [Number(store[2]), 
+                  Number(store[1])]
+                })}})
+            .on('end', function (){
+              return db.close();
+            });
         }
-        return db.close();
       });
     }
   });

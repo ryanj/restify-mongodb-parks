@@ -10,8 +10,8 @@ app.use(restify.CORS())
 app.use(restify.fullResponse())
 
 // Routes
-app.get('/parks/within', db.selectBox);
-app.get('/parks', db.selectAll);
+app.get('/locations/within', db.selectBox);
+app.get('/locations', db.selectAll);
 app.get('/status', function (req, res, next)
 {
   res.send("{status: 'ok'}");

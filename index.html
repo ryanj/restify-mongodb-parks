@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Map of Parks and Historic Sites</title>
+  <title>Map of Target Store Locations</title>
     <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
     <link rel="stylesheet" href="css/ribbon.css" />
   <!--[if lte IE 8]>
@@ -29,21 +29,21 @@
  
 </head>
 <body>
-  <h1 id="title">National Parks</h1>
+  <h1 id="title">Target Store Locator</h1>
   <div id="map"></div>
   <script src="//cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
   <script>
     var map = L.map('map').setView([37.8, -122.3], 10);
     var markerLayerGroup = L.layerGroup().addTo(map);
-    L.tileLayer('http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png', {
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       minZoom: 5,
-      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
+      attribution: 'Map tile data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
     }).addTo(map);
 
     function getPins(e){
       bounds = map.getBounds();
-      url = "parks/within?lat1=" + bounds.getSouthWest().lat + "&lon1=" + bounds.getSouthWest().lng + "&lat2=" + bounds.getNorthEast().lat + "&lon2=" + bounds.getNorthEast().lng;
+      url = "locations/within?lat1=" + bounds.getSouthWest().lat + "&lon1=" + bounds.getSouthWest().lng + "&lat2=" + bounds.getNorthEast().lat + "&lon2=" + bounds.getNorthEast().lng;
       $.get(url, pinTheMap, "json")
     }
 
@@ -68,6 +68,6 @@
     map.whenReady(getPins)
 
   </script>
-  <span id="fossribbon"><a href="https://openshift.redhat.com/app/console/application_types/custom?name=parks&initial_git_url=https%3A%2F%2Fgithub.com/ryanj/restify-mongodb-parks.git&cartridges[]=nodejs-0.10&cartridges[]=mongodb-2.2">Run me on OpenShift</a></span>
+  <span id="fossribbon"><a href="https://openshift.redhat.com/app/console/application_types/custom?name=locations&initial_git_url=https%3A%2F%2Fgithub.com/ryanj/restify-mongodb-parks.git&cartridges[]=nodejs-0.10&cartridges[]=mongodb-2&initial_git_branch=target">Run me on OpenShift</a></span>
 </body>
 </html>
