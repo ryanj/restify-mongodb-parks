@@ -55,7 +55,7 @@ function select_box(req, res, next){
     res.send(500, {http_status:400,error_msg: "this endpoint requires two pair of lat, long coordinates: lat1 lon1 lat2 lon2\na query 'limit' parameter can be optionally specified as well."});
     return console.error('could not connect to the database', err);
   }
-  db[collection_name].find( {"pos" : {'$within': { '$box': [[lon1,lat1],[lon2,lat2]]}}}).limit(limit).toArray(function(err,rows){
+  db[collection_name].find( {"pos" : {'$geoWithin': { '$box': [[lon1,lat1],[lon2,lat2]]}}}).limit(limit).toArray(function(err,rows){
     if(err) {
       res.send(500, {http_status:500,error_msg: err})
       return console.error('error running query', err);
