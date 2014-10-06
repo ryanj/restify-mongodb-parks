@@ -1,8 +1,11 @@
-var config      = require('config'),
+var cc          = require('config-multipaas'),
     mongojs     = require('mongojs');
 
-var db_config   = config.db_config,
-    collection_name = config.collection_name;
+var config      = cc({ 
+  collection_name : process.env.COLLECTION_NAME || process.env.OPENSHIFT_APP_NAME || 'parks'
+})
+var db_config        = config.get('MONGODB_DB_URL'),
+    collection_name  = config.get('collection_name');
 var db = mongojs(db_config + collection_name, [collection_name] );
 
 function init_db(){
