@@ -12,11 +12,11 @@ Related post on OpenShift.com: [https://www.openshift.com/blogs/instant-mapping-
 
 To deploy a clone of this application using the [`rhc` command line tool](http://rubygems.org/gems/rhc), type:
 
-    rhc app create parks nodejs-0.10 mongodb-2.2 --from-code=https://github.com/ryanj/restify-mongodb-parks.git
+    rhc app create parks nodejs-0.10 mongodb-2.4 --from-code=https://github.com/ryanj/restify-mongodb-parks.git
     
-Or, [link to a web-based **clone+deploy**](https://openshift.redhat.com/app/console/application_type/custom?name=parks&cartridges%5B%5D=nodejs-0.10&cartridges%5B%5D=mongodb-2.2&initial_git_url=https%3A%2F%2Fgithub.com%2Fryanj%2Frestify-mongodb-parks.git) on [OpenShift Online](http://OpenShift.com) or [your own open cloud](http://openshift.github.io): 
+Or, [link to a web-based **clone+deploy**](https://openshift.redhat.com/app/console/application_type/custom?name=parks&cartridges%5B%5D=nodejs-0.10&cartridges%5B%5D=mongodb-2.4&initial_git_url=https%3A%2F%2Fgithub.com%2Fryanj%2Frestify-mongodb-parks.git) on [OpenShift Online](http://OpenShift.com) or [your own open cloud](http://openshift.github.io): 
 
-    https://openshift.redhat.com/app/console/application_type/custom?name=parks&cartridges%5B%5D=nodejs-0.10&cartridges%5B%5D=mongodb-2.2&initial_git_url=https%3A%2F%2Fgithub.com%2Fryanj%2Frestify-mongodb-parks.git
+    https://openshift.redhat.com/app/console/application_type/custom?name=parks&cartridges%5B%5D=nodejs-0.10&cartridges%5B%5D=mongodb-2.4&initial_git_url=https%3A%2F%2Fgithub.com%2Fryanj%2Frestify-mongodb-parks.git
 
 A live demo is available at: [http://mongoparks-shifter.rhcloud.com/](http://mongoparks-shifter.rhcloud.com/)
 
