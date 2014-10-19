@@ -8,10 +8,9 @@
     "npm": "1.2.x"
   },
   "dependencies": {
-    "config-multipaas": "^0.0.3",
-    "requireindex": "1.0.x",
-    "restify": "2.5.x",
-    "mongojs": "~0.10.0"
+    "config-multipaas": "^0.0.5",
+    "restify": "^2.8.3",
+    "mongojs": "^0.15.1"
   },
   "devDependencies": {
     "request": "2.24.x"

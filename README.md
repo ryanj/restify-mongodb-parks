@@ -1,6 +1,9 @@
 # Map of National Parks and Historic Sites
 *powered by Restify, MongoDB, and Leaflet maps*
 
+[![Build Status](https://build-shifter.rhcloud.com:443/buildStatus/icon?job=mongoparks-build)](http://mongoparks-shifter.rhcloud.com)
+[![Dependency Check](https://david-dm.org/ryanj/restify-mongodb-parks.png)](https://david-dm.org/ryanj/restify-mongodb-parks)
+
 A basic instant mapping demo using MongoDB, node-restify, LeafLet Maps and map tiles from Stamen, to visualize the locations of major National Parks and Historic Sites.
 
 <a href='http://mongoparks-shifter.rhcloud.com/'><img src='https://www.openshift.com/sites/default/files/Parks_preview.png'/></a>
@@ -8,8 +11,6 @@ A basic instant mapping demo using MongoDB, node-restify, LeafLet Maps and map t
 Related post on OpenShift.com: [https://www.openshift.com/blogs/instant-mapping-applications-with-postgis-and-nodejs](https://www.openshift.com/blogs/instant-mapping-applications-with-postgis-and-nodejs)
 
 ## Instant Provisioning on OpenShift
-[![Build Status](https://build-shifter.rhcloud.com:443/buildStatus/icon?job=mongoparks-build)](http://mongoparks-shifter.rhcloud.com)
-
 To deploy a clone of this application using the [`rhc` command line tool](http://rubygems.org/gems/rhc), type:
 
     rhc app create parks nodejs-0.10 mongodb-2.4 --from-code=https://github.com/ryanj/restify-mongodb-parks.git
