@@ -1,8 +1,7 @@
 # Map of National Parks and Historic Sites
 *powered by Restify, MongoDB, and Leaflet maps*
 
-[![Build Status](https://build-shifter.rhcloud.com:443/buildStatus/icon?job=mongoparks-build)](http://mongoparks-shifter.rhcloud.com)
-[![Dependency Check](https://david-dm.org/ryanj/restify-mongodb-parks.png)](https://david-dm.org/ryanj/restify-mongodb-parks)
+[![Build Status](http://img.shields.io/jenkins/s/https/build-shifter.rhcloud.com/mongoparks-build.svg)](https://build-shifter.rhcloud.com/job/mongoparks-build/) [![Dependency Check](http://img.shields.io/david/ryanj/restify-mongodb-parks.svg)](https://david-dm.org/ryanj/restify-mongodb-parks) [![Deploy](https://img.shields.io/badge/Launch_on-OpenShift-brightgreen.svg)](https://openshift.redhat.com/app/console/application_type/custom?name=parks&cartridges%5B%5D=nodejs-0.10&cartridges%5B%5D=mongodb-2.4&initial_git_url=https%3A%2F%2Fgithub.com%2Fryanj%2Frestify-mongodb-parks.git)
 
 A basic instant mapping demo using MongoDB, node-restify, LeafLet Maps and map tiles from Stamen, to visualize the locations of major National Parks and Historic Sites.
 
