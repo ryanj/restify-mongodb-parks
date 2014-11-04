@@ -8,12 +8,13 @@
     "npm": "1.2.x"
   },
   "dependencies": {
-    "config-multipaas": "^0.0.5",
+    "config-multipaas": "^0.0.6",
     "restify": "^2.8.3",
     "mongojs": "^0.15.1"
   },
   "devDependencies": {
-    "request": "2.24.x"
+    "request": "2.24.x",
+    "tap": "^0.4.13"
   },
   "repository": {
     "type": "git",
