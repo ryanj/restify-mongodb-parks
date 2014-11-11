@@ -1,14 +1,14 @@
 {
   "name": "MongoDB-USParks",
   "description": "A simple mapping application for finding US National Parks and Historic Sites, powered by MongoDB and Leaflet maps",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": false,
   "engines": {
     "node": "0.10.x",
     "npm": "1.2.x"
   },
   "dependencies": {
-    "config-multipaas": "^0.0.6",
+    "config-multipaas": "^0.1.0",
     "restify": "^2.8.3",
     "mongojs": "^0.15.1"
   },
