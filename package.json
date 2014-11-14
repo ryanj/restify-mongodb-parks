@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "config-multipaas": "^0.1.0",
-    "restify": "^2.8.3",
-    "mongojs": "^0.15.1"
+    "mongojs": "^0.17.0",
+    "restify": "^2.8.3"
   },
   "devDependencies": {
     "request": "2.24.x",
