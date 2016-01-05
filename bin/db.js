@@ -1,15 +1,20 @@
 var cc          = require('config-multipaas'),
-    mongojs     = require('mongojs');
+    mongojs     = require('mongojs'),
+    path        = require('path');
 
-var config      = cc({ 
-  collection_name : process.env.COLLECTION_NAME || process.env.OPENSHIFT_APP_NAME || 'parks'
+var config      = cc({
+  collection_name : process.env.MONGODB_DATABASE || process.env.COLLECTION_NAME || process.env.OPENSHIFT_APP_NAME || 'parks'
 })
 var db_config        = config.get('MONGODB_DB_URL'),
     collection_name  = config.get('collection_name');
+if( process.env.MONGODB_USER && process.env.MONGODB_PASSWORD &&  
+	  process.env.MONGODB_SERVICE_HOST && process.env.MONGODB_SERVICE_PORT ){
+	db_config = process.env.MONGODB_USER+":"+process.env.MONGODB_PASSWORD+"@"+process.env.MONGODB_SERVICE_HOST+":"+process.env.MONGODB_SERVICE_PORT+"/";
+}
 var db = mongojs(db_config + collection_name, [collection_name] );
 
 function init_db(){
-  var points = require(__dirname + '/../parkcoord.json');
+  var points = require(path.resolve('./parkcoord.json'));
   db[collection_name].ensureIndex({'pos':"2d"}, function(err, doc){
     if(err){
       console.log(err);
@@ -19,17 +24,25 @@ function init_db(){
       db[collection_name].count(function(errr, count){
         if(errr){
           console.log(errr);
+          return db.close();
         }else if(count > 0){
           console.log("data already exists - bypassing db initialization work...");
+          return db.close();
         }else{
           console.log("Importing map points...");
-          db[collection_name].insert(points);
+          db[collection_name].insert(points, function(errrr){
+            if(errr){
+              console.log(errr);
+            }else{
+              console.log("points imported");
+            }
+            return db.close();
+          });
         }
-        return db.close();
       });
     }
   });
-} 
+}
 
 function flush_db(){
   console.log("Dropping the DB...");
