@@ -6,8 +6,7 @@ var cc          = require('config-multipaas'),
 var config      = cc(),
     app         = restify.createServer()
 
-// Initialize the DB
-db.initDB();
+db.initDB('keepAlive');
 
 app.use(restify.queryParser())
 app.use(restify.CORS())

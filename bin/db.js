@@ -13,21 +13,21 @@ if( process.env.MONGODB_USER && process.env.MONGODB_PASSWORD &&
 }
 var db = mongojs(db_config + collection_name, [collection_name] );
 
-function init_db(){
+function init_db(persist_db_connection){
   var points = require(path.resolve('./parkcoord.json'));
   db[collection_name].ensureIndex({'pos':"2d"}, function(err, doc){
     if(err){
       console.log(err);
-      return db.close();
+      return persist_db_connection || db.close();
     }else{
       console.log("index added on 'pos'");
       db[collection_name].count(function(errr, count){
         if(errr){
           console.log(errr);
-          return db.close();
+          return persist_db_connection || db.close();
         }else if(count > 0){
           console.log("data already exists - bypassing db initialization work...");
-          return db.close();
+          return persist_db_connection || db.close();
         }else{
           console.log("Importing map points...");
           db[collection_name].insert(points, function(errrr){
@@ -36,7 +36,7 @@ function init_db(){
             }else{
               console.log("points imported");
             }
-            return db.close();
+            return persist_db_connection || db.close();
           });
         }
       });
@@ -44,13 +44,13 @@ function init_db(){
   });
 }
 
-function flush_db(){
+function flush_db(persist_db_connection){
   console.log("Dropping the DB...");
   db[collection_name].drop(function(err){
     if(err){
       console.log(err);
     }
-    return db.close();
+    return persist_db_connection || db.close();
   });
 } 
 
