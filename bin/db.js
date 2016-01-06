@@ -3,13 +3,16 @@ var cc          = require('config-multipaas'),
     path        = require('path');
 
 var config      = cc({
-  collection_name : process.env.MONGODB_DATABASE || process.env.COLLECTION_NAME || process.env.OPENSHIFT_APP_NAME || 'parks'
+  collection_name : process.env.MONGODB_DATABASE || process.env.COLLECTION_NAME || process.env.OPENSHIFT_APP_NAME || 'parks',
+  db_service_name : process.env.DATABASE_SERVICE_NAME || "mongodb"
 })
+
 var db_config        = config.get('MONGODB_DB_URL'),
     collection_name  = config.get('collection_name');
-if( process.env.MONGODB_USER && process.env.MONGODB_PASSWORD &&  
-	  process.env.MONGODB_SERVICE_HOST && process.env.MONGODB_SERVICE_PORT ){
-	db_config = process.env.MONGODB_USER+":"+process.env.MONGODB_PASSWORD+"@"+process.env.MONGODB_SERVICE_HOST+":"+process.env.MONGODB_SERVICE_PORT+"/";
+    db_service       = config.get('db_service_name').toUpperCase();
+if( process.env[db_service+'_USER'] && process.env[db_service+'_PASSWORD'] &&  
+	  process.env[db_service+'_SERVICE_HOST'] && process.env[db_service+'_SERVICE_PORT'] ){
+	db_config = process.env[db_service+'_USER']+":"+process.env[db_service+'_PASSWORD']+"@"+process.env[db_service+'_SERVICE_HOST']+":"+process.env[db_service+'_SERVICE_PORT']+"/";
 }
 var db = mongojs(db_config + collection_name, [collection_name] );
 

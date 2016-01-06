@@ -280,6 +280,10 @@
                                 ],
                                 "env": [
                                     {
+                                        "name": "DATABASE_SERVICE_NAME",
+                                        "value": "${DATABASE_SERVICE_NAME}"
+                                    },
+                                    {
                                         "name": "MONGODB_DATABASE",
                                         "value": "${MONGODB_DATABASE}"
                                     },
