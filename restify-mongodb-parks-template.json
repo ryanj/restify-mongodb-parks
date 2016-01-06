@@ -385,7 +385,7 @@
         {
             "name": "MONGODB_DATABASE",
             "description": "Database name",
-            "value": "sampledb",
+            "value": "parks",
             "required": true
         },
         {
