@@ -364,7 +364,7 @@
         },
         {
             "name": "DATABASE_SERVICE_NAME",
-            "description": "Database service name",
+            "description": "Database service name (value 'mongodb' currently required for DB autoconfig)",
             "value": "mongodb",
             "required": true
         },
