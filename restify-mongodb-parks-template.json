@@ -191,7 +191,8 @@
                 "source": {
                     "type": "Git",
                     "git": {
-                        "uri": "https://github.com/ryanj/restify-mongodb-parks"
+                        "uri": "${SOURCE_REPOSITORY_URL}",
+                        "ref": "${SOURCE_REPOSITORY_REF}"
                     }
                 },
                 "strategy": {
@@ -360,6 +361,15 @@
         }
     ],
     "parameters": [
+        {
+            "name": "SOURCE_REPOSITORY_URL",
+            "description": "The URL of the repository with your application source code",
+            "value": "https://github.com/ryanj/restify-mongodb-parks"
+        },
+        {
+            "name": "SOURCE_REPOSITORY_REF",
+            "description": "Set this to a branch name, tag or other ref of your repository if you are not using the default branch"
+        },
         {
             "name": "WEB_SERVICE_NAME",
             "description": "Front-end Web service name",
