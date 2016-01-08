@@ -3,6 +3,7 @@
   "description": "A simple mapping application for finding US National Parks and Historic Sites, powered by MongoDB and Leaflet maps",
   "version": "0.1.0",
   "private": false,
+  "license": "MIT",
   "engines": {
     "node": "0.10.x",
     "npm": "1.2.x"
