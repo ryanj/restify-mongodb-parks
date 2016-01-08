@@ -18,8 +18,9 @@ if( process.env[db_service+'_USER'] && process.env[db_service+'_PASSWORD'] &&
 }
 //normalize db connection string
 if(db_config[db_config.length - 1] !== "/"){
-  db_config += '/'+collection_name;
+  db_config += '/';
 }
+db_config +=collection_name;
 console.log("DB connection: " + db_config);
 var db = mongojs(db_config, [collection_name] );
 
