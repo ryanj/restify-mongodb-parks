@@ -10,11 +10,26 @@ var config      = cc({
 var db_config        = config.get('MONGODB_DB_URL'),
     collection_name  = config.get('collection_name');
     db_service       = config.get('db_service_name').toUpperCase();
+
+//kubernetes and openshiftV3 config
 if( process.env[db_service+'_USER'] && process.env[db_service+'_PASSWORD'] &&  
 	  process.env[db_service+'_SERVICE_HOST'] && process.env[db_service+'_SERVICE_PORT'] ){
 	db_config = process.env[db_service+'_USER']+":"+process.env[db_service+'_PASSWORD']+"@"+process.env[db_service+'_SERVICE_HOST']+":"+process.env[db_service+'_SERVICE_PORT']+"/";
 }
-var db = mongojs(db_config + collection_name, [collection_name] );
+//normalize db connection string
+if(db_config[db_config.length - 1] !== "/"){
+  db_config += '/'+collection_name;
+}
+console.log("DB connection: " + db_config);
+var db = mongojs(db_config, [collection_name] );
+
+db.on('error', function (err) {
+  console.log('database error', err)
+})
+ 
+db.on('connect', function () {
+  console.log('database connected')
+})
 
 function init_db(persist_db_connection){
   var points = require(path.resolve('./parkcoord.json'));
