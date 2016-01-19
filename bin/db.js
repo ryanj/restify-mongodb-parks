@@ -1,119 +1,14 @@
-var cc          = require('config-multipaas'),
-    mongojs     = require('mongojs'),
-    path        = require('path');
+var config    = require('./config.js');
+var db_svc    = config.get('db_svc_name'),
+    db_export = {};
 
-var config      = cc({
-  collection_name : process.env.MONGODB_DATABASE || process.env.COLLECTION_NAME || process.env.OPENSHIFT_APP_NAME || 'parks',
-  db_service_name : process.env.DATABASE_SERVICE_NAME || "mongodb"
-})
-
-var db_config        = config.get('MONGODB_DB_URL'),
-    collection_name  = config.get('collection_name');
-    db_service       = config.get('db_service_name').toUpperCase();
-
-//kubernetes and openshiftV3 config
-if( process.env[db_service+'_USER'] && process.env[db_service+'_PASSWORD'] &&  
-	  process.env[db_service+'_SERVICE_HOST'] && process.env[db_service+'_SERVICE_PORT'] ){
-	db_config = process.env[db_service+'_USER']+":"+process.env[db_service+'_PASSWORD']+"@"+process.env[db_service+'_SERVICE_HOST']+":"+process.env[db_service+'_SERVICE_PORT']+"/";
-}
-//normalize db connection string
-if(db_config[db_config.length - 1] !== "/"){
-  db_config += '/';
-}
-db_config +=collection_name;
-console.log("DB connection: " + db_config);
-var db = mongojs(db_config, [collection_name] );
-
-db.on('error', function (err) {
-  console.log('database error', err)
-})
- 
-db.on('connect', function () {
-  console.log('database connected')
-})
-
-function init_db(persist_db_connection){
-  var points = require(path.resolve('./parkcoord.json'));
-  db[collection_name].ensureIndex({'pos':"2d"}, function(err, doc){
-    if(err){
-      console.log(err);
-      return persist_db_connection || db.close();
-    }else{
-      console.log("index added on 'pos'");
-      db[collection_name].count(function(errr, count){
-        if(errr){
-          console.log(errr);
-          return persist_db_connection || db.close();
-        }else if(count > 0){
-          console.log("data already exists - bypassing db initialization work...");
-          return persist_db_connection || db.close();
-        }else{
-          console.log("Importing map points...");
-          db[collection_name].insert(points, function(errrr){
-            if(errr){
-              console.log(errr);
-            }else{
-              console.log("points imported");
-            }
-            return persist_db_connection || db.close();
-          });
-        }
-      });
-    }
-  });
+// Attempt to autoconfigure for PG and MongoDB
+if( db_svc == "postgresql"){
+  db_export = require('./pgdb.js');
+}else if( db_svc == "mongodb"){
+  db_export = require('./mongodb.js');
+}else{
+  console.log("ERROR: DB Configuration missing! Failed to autoconfigure database");
 }
 
-function flush_db(persist_db_connection){
-  console.log("Dropping the DB...");
-  db[collection_name].drop(function(err){
-    if(err){
-      console.log(err);
-    }
-    return persist_db_connection || db.close();
-  });
-} 
-
-function select_box(req, res, next){
-  //clean these variables:
-  var query = req.query;
-  var lat1 = Number(query.lat1),
-      lon1 = Number(query.lon1),
-      lat2 = Number(query.lat2),
-      lon2 = Number(query.lon2);
-  var limit = (typeof(query.limit) !== "undefined") ? query.limit : 40;
-  if(!(Number(query.lat1) 
-    && Number(query.lon1) 
-    && Number(query.lat2) 
-    && Number(query.lon2)
-    && Number(limit)))
-  {
-    res.send(500, {http_status:400,error_msg: "this endpoint requires two pair of lat, long coordinates: lat1 lon1 lat2 lon2\na query 'limit' parameter can be optionally specified as well."});
-    return console.error('could not connect to the database', err);
-  }
-  db[collection_name].find( {"pos" : {'$geoWithin': { '$box': [[lon1,lat1],[lon2,lat2]]}}}).limit(limit).toArray(function(err,rows){
-    if(err) {
-      res.send(500, {http_status:500,error_msg: err})
-      return console.error('error running query', err);
-    }
-    res.send(rows);
-    return rows;
-  });
-};
-function select_all(req, res, next){
-  console.log(db);
-  db[collection_name].find(function(err, rows){
-    if(err) {
-      res.send(500, {http_status:500,error_msg: err})
-      return console.error('error running query', err);
-    }
-    res.send(rows);
-    return rows;
-  });
-};
-
-module.exports = exports = {
-  selectAll: select_all,
-  selectBox: select_box,
-  flushDB:   flush_db,
-  initDB:    init_db
-};
+module.exports = exports = db_export;
