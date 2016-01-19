@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "config-multipaas": "^0.2.0",
-    "mongojs": "^2.2.2",
+    "mongojs": "^2.3.0",
     "restify": "^4.0.3"
   },
   "devDependencies": {
