@@ -9,7 +9,7 @@
     "npm": "1.2.x"
   },
   "dependencies": {
-    "config-multipaas": "^0.2.0",
+    "config-multipaas": "^0.2.1",
     "mongojs": "^2.3.0",
     "restify": "^4.0.3"
   },
