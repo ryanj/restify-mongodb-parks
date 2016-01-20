@@ -1,5 +1,5 @@
 {
-  "name": "MongoDB-USParks",
+  "name": "restify-mongodb-parks",
   "description": "A simple mapping application for finding US National Parks and Historic Sites, powered by MongoDB and Leaflet maps",
   "version": "0.1.0",
   "private": false,
