@@ -1,10 +1,8 @@
-var cc          = require('config-multipaas'),
-    restify     = require('restify'),
-    fs          = require('fs'),
-    db          = require('./bin/db.js')
-
-var config      = cc(),
-    app         = restify.createServer()
+var restify = require('restify'),
+    fs      = require('fs'),
+    config  = require('./bin/config.js'),
+    db      = require('./bin/db.js');
+var app     = restify.createServer();
 
 db.initDB('keepAlive');
 
@@ -28,7 +26,7 @@ app.get('/', function (req, res, next)
   res.end(data.toString().replace(/host:port/g, req.header('Host')));
 });
 
-app.get(/\/(css|js|img)\/?.*/, restify.serveStatic({directory: './static/'}));
+app.get(/\/(css|js|img)\/?.*/, restify.serveStatic({directory: __dirname+'/static/'}));
 
 app.listen(config.get('PORT'), config.get('IP'), function () {
   console.log( "Listening on " + config.get('IP') + ", port " + config.get('PORT'))
