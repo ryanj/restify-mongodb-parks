@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "config-multipaas": "^0.2.1",
+    "leaflet": "^0.7.7",
     "mongojs": "^2.3.0",
     "restify": "^4.0.3"
   },
