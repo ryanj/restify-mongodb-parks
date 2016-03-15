@@ -5,8 +5,8 @@
         "name": "restify-mongodb-parks",
         "annotations": {
             "description": "A single-page client-side map of US National Parks using Nodejs with Restify, and a MongoDB database service (without persistent storage).",
-            "iconClass": "icon-mongodb",
-            "tags": "database,mongodb"
+            "iconClass": "icon-nodejs",
+            "tags": "instant-app,nodejs,database,mongodb"
         }
     },
     "objects": [
