@@ -15,7 +15,7 @@
     "restify": "^4.0.3"
   },
   "devDependencies": {
-    "request": "2.24.x",
+    "request": "2.71.0",
     "tap": "^5.7.1"
   },
   "repository": {
