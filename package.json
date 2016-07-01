@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "request": "2.72.0",
-    "tap": "^5.7.1"
+    "tap": "^6.0.0"
   },
   "repository": {
     "type": "git",
